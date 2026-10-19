@@ -1,1 +1,60 @@
+// ============================================================
+// Platform      : HDLBits
+// Problem       : State Transition Logic
+// Topic         : Finite State Machines (FSM)
+// Problem Link  : https://hdlbits.01xz.net/wiki/Fsm3comb
+//
+// Description:
+// Determine the next state based on the current state
+// and the input signal.
+//
+// Notes:
+// Refer to the original problem link for the state diagram.
+// ============================================================
 
+module top_module(
+    input in,
+    input [1:0] state,
+    output [1:0] next_state,
+    output out); //
+
+    parameter A=0, B=1, C=2, D=3;
+
+    // State transition logic: next_state = f(state, in)
+    always @(*)
+        begin
+            case(state ) // DEPENDING OF THE DIAGRAM AND TRUTH TABLE BWLOW IS THE TRANSITION STATE FOR EACH STATE 
+                A: begin
+                    if (in==0)
+                        next_state=A;
+                else 
+                    next_state=B;
+                end
+                B: begin
+                    if(in==0)
+                        next_state=C;
+                else 
+                    next_state=B;
+                end
+                C:begin 
+                    if (in==0)
+                        next_state=A;
+                else
+                    next_state=D;
+                end
+                D: begin
+                    if(in==0)
+                        next_state=C;
+                else 
+                    next_state=B;
+                end
+            endcase
+                
+        end 
+
+    
+    assign out = (state==2'b11)?1'b1:1'b0;   
+// SEE OUT IS 1 ONLY WHEN STATE IS 3 SO WE CAN USE CONINOUS
+//ASSIGNMENT ASSIGN AND THE CONDITION TO  BUILD OUTPUT LOGIC 
+
+endmodule
