@@ -1,0 +1,38 @@
+// ============================================================
+// Platform      : HDLBits
+// Problem       : State Transition Logic
+// Topic         : Finite State Machines (FSM)
+// Problem Link  : https://hdlbits.01xz.net/wiki/Count15
+//
+// Description:
+// Determine the next state based on the current state
+// and the input signal.
+//
+// Notes:
+// Refer to the original problem link for the state diagram.
+// ============================================================
+module top_module (
+    input clk,
+    input reset,      // Synchronous active-high reset
+    output [3:0] q);
+    
+   
+    always @(posedge clk)
+        
+        begin
+           
+            if(reset)
+                q<=0;
+            else 
+                begin
+                    q<=q+1; //as soon as reset it start counting again and count till 15 so as q is of 4 bit its
+//maximum value is 15 so we just need to increase our counter by 1 at every clk cycle 
+
+                end
+           
+                
+                
+                
+        end 
+
+endmodule
