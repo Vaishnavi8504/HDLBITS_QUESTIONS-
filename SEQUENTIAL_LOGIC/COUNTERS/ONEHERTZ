@@ -1,0 +1,36 @@
+
+/*From a 1000 Hz clock, derive a 1 Hz signal, called OneHertz, that could be used to drive an Enable signal for a set of hour/minute/second counters to create a digital wall clock. Since we want the clock to count once per second, the OneHertz signal must be asserted for exactly one cycle each second. Build the frequency divider using modulo-10 (BCD) counters and as few other gates as possible. Also output the enable signals from each of the BCD counters you use (c_enable[0] for the fastest counter, c_enable[2] for the slowest).
+
+The following BCD counter is provided for you. Enable must be high for the counter to run. Reset is synchronous and set high to force the counter to zero. All counters in your circuit must directly use the same 1000 Hz signal.
+
+module bcdcount (
+	input clk,
+	input reset,
+	input enable,
+	output reg [3:0] Q
+);*/
+question:https://hdlbits.01xz.net/wiki/Exams/ece241_2014_q7b
+key _learning :here we need to count 1000 and after that the onehertz goes high and internal we have bcd counter which count from 0 to 9 10 times means so 10*10*10 is 1k 
+we need to keep moving lowest bit 0 to 9 then comes to the next and every time the next bit change or increment  the slowest bit go from 0 to 9 so  till the second bit goes from 
+0 to 9 it already count 100 times now these 100 combination combine with another 0 to 9 combination so it become 1000 and the second enable pin should active 
+once the w[3:0] comes to 9 similarly the 3rd  enable bit should  high when w[7:4 will be at 9 means 1001 and w[3:0 ]also at 1001 ]
+
+module top_module (
+    input clk,
+    input reset,
+    output OneHertz,
+    output [2:0] c_enable
+); 
+    wire [11:0]w;
+    assign c_enable[0]=1'b1;
+    assign c_enable[1]=(w[3:0]==4'd9);
+    assign c_enable[2]=(w[3:0]==4'd9 && w[7:4]==4'd9);
+                
+        
+
+    bcdcount counter0 (clk, reset, c_enable[0],w[3:0]);
+    bcdcount counter1 (clk, reset, c_enable[1],w[7:4]);
+    bcdcount counter2 (clk, reset, c_enable[2],w[11:8]);
+    assign OneHertz=(w[11:8]==4'd9 && w[7:4]==4'd9&& w[3:0]==4'd9)?1'b1:1'b0;
+
+endmodule
